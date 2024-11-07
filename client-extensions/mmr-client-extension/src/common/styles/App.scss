@@ -1,0 +1,13 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide la pantalla en dos columnas iguales */
+    height: 100vh; /* Ocupa toda la altura de la viewport */
+  }
+  
+  .webcam-column,
+  .button-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
