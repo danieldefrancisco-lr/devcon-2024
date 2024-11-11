@@ -79,48 +79,44 @@ function MMRApiClient(props) {
 		console.log("modelCategoryId: "+modelCategoryId)
 		return modelCategoryId;
 	}
-	
-  			
-        //	myHeaders.append("Content-Type", "multipart/form-data");
-        //	myHeaders.append("apikey", "bdf8754910e1046d92575312c7b81b6ecffb268bf28fa5a145e369cd9af68b52");
 		  
-			async function capture() {
-				myHeaders.append("apikey", props.apikey);
-				const imageSrc = webcamRef.current.getScreenshot();
-				setImgSrc(imageSrc);
+	async function capture() {
+			myHeaders.append("apikey", props.apikey);
+			const imageSrc = webcamRef.current.getScreenshot();
+			setImgSrc(imageSrc);
 
 			  // Convert imageSrc to a Blob
-  				const blob = await fetch(imageSrc).then(res => res.blob());
+  			const blob = await fetch(imageSrc).then(res => res.blob());
 		  
 			  // Create form-data body
-			  	const formData = new FormData();
+			const formData = new FormData();
 			  // Append the image to the form-data
-			  	formData.append('file', blob, 'car-image.jpg');
+			formData.append('file', blob, 'car-image.jpg');
 			 
 			  	
-				const response = await Liferay.Util.fetch('https://trafficeye.ai/recognition', {
+			const response = await Liferay.Util.fetch('https://trafficeye.ai/recognition', {
 					method: 'POST',
 					headers: myHeaders,
 					body: formData,
 					redirect: "follow"
 				  });
 				
-				  const data = await response.json();
+			const data = await response.json();
 				
-				  const maker = data.data.combinations[0].roadUsers[0].mmr.make.value;
-				  const model = data.data.combinations[0].roadUsers[0].mmr.model.value;
-				  const generation = data.data.combinations[0].roadUsers[0].mmr.generation.value;
-				  const color = data.data.combinations[0].roadUsers[0].mmr.color.value;
-				  const licensePlate = data.data.combinations[0].roadUsers[0].plates[0].text.value;
-				  registerVehicle(maker, model, licensePlate);
-				  console.log('The maker and model of the car is:', maker + " " + model);
-				  let carmodelCategoryId = await asyncDetectedModelCategory(maker,model);
-				  // Wait for modelId to be updated
-				  console.log("Model Id to build the link:" + modelId);
-				  const sparePartsLink = document.getElementById('sparePartsLink');
-				  sparePartsLink.querySelector('a').textContent = `See spare parts for the ${maker} ${model} ${generation} in color ${color}`;
+			const maker = data.data.combinations[0].roadUsers[0].mmr.make.value;
+			const model = data.data.combinations[0].roadUsers[0].mmr.model.value;
+			const generation = data.data.combinations[0].roadUsers[0].mmr.generation.value;
+			const color = data.data.combinations[0].roadUsers[0].mmr.color.value;
+			const licensePlate = data.data.combinations[0].roadUsers[0].plates[0].text.value;
+			registerVehicle(maker, model, licensePlate);
+			console.log('The maker and model of the car is:', maker + " " + model);
+			let carmodelCategoryId = await asyncDetectedModelCategory(maker,model);
+				// Wait for modelId to be updated
+			console.log("Model Id to build the link:" + modelId);
+			const sparePartsLink = document.getElementById('sparePartsLink');
+			sparePartsLink.querySelector('a').textContent = `See spare parts for the ${maker} ${model} ${generation} in color ${color}`;
 				  //sparePartsLink.querySelector('a').href = `http://localhost:8080/web/ray-service-1/spare-parts?category=${carmodelCategoryId}`;
-				  sparePartsLink.querySelector('a').href = websiteURL + props.catalogPage + `?category=${carmodelCategoryId}`;
+			sparePartsLink.querySelector('a').href = websiteURL + props.catalogPage + `?category=${carmodelCategoryId}`;
 				 
 			};
 		
