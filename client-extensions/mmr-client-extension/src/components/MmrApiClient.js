@@ -12,13 +12,17 @@ function MMRApiClient(props) {
 	const [makerId, setMakerId] = useState("");
 	const [modelId, setModelId] = useState("");
 
-	let friendlyPath = Liferay.ThemeDisplay.getLayoutRelativeURL();
-	let friendlyPagePosition = friendlyPath.lastIndexOf('/');
-	let friendlyPage = friendlyPath.substring(friendlyPagePosition);
+	//let friendlyPath = Liferay.ThemeDisplay.getLayoutRelativeURL();
+	//let friendlyPagePosition = friendlyPath.lastIndexOf('/');
+	//let friendlyPage = friendlyPath.substring(friendlyPagePosition);
 	let layoutURL = Liferay.ThemeDisplay.getLayoutURL();
-	console.log( "RelativeURL:" + friendlyPath);
-	console.log("layoutURL:"+layoutURL);
-	console.log("friendlyPage:"+friendlyPage);
+	const lastSlash = layoutURL.lastIndexOf('/');
+	// Extract the domain+website
+	const websiteURL = layoutURL.substring(0, lastSlash + 1);
+
+	console.log("Website URL: "+websiteURL);
+
+
 	const [message, setMessage] = useState("");
 	const webcamRef = useRef(null);
 	const [imgSrc, setImgSrc] = useState(null);
@@ -105,6 +109,8 @@ function MMRApiClient(props) {
 				
 				  const maker = data.data.combinations[0].roadUsers[0].mmr.make.value;
 				  const model = data.data.combinations[0].roadUsers[0].mmr.model.value;
+				  const generation = data.data.combinations[0].roadUsers[0].mmr.generation.value;
+				  const color = data.data.combinations[0].roadUsers[0].mmr.color.value;
 				  const licensePlate = data.data.combinations[0].roadUsers[0].plates[0].text.value;
 				  registerVehicle(maker, model, licensePlate);
 				  console.log('The maker and model of the car is:', maker + " " + model);
@@ -112,8 +118,9 @@ function MMRApiClient(props) {
 				  // Wait for modelId to be updated
 				  console.log("Model Id to build the link:" + modelId);
 				  const sparePartsLink = document.getElementById('sparePartsLink');
-				  sparePartsLink.querySelector('a').textContent = `See spare parts for the maker ${maker}`;
-				  sparePartsLink.querySelector('a').href = `http://localhost:8080/web/ray-service-1/spare-parts?category=${carmodelCategoryId}`;
+				  sparePartsLink.querySelector('a').textContent = `See spare parts for the ${maker} ${model} ${generation} in color ${color}`;
+				  //sparePartsLink.querySelector('a').href = `http://localhost:8080/web/ray-service-1/spare-parts?category=${carmodelCategoryId}`;
+				  sparePartsLink.querySelector('a').href = websiteURL + props.catalogPage + `?category=${carmodelCategoryId}`;
 				 
 			};
 		
@@ -126,11 +133,11 @@ function MMRApiClient(props) {
 				  ref={webcamRef}
 				  screenshotFormat="image/jpeg"
 				/>
+				<button onClick={capture}>Capturar</button>
 				</div>
 				<div className="button-column">
 				{imgSrc && <img src={imgSrc} alt="captura" />}
 				<br></br>
-				<button onClick={capture}>Capturar</button>
 				<div id="sparePartsLink"><a></a></div>
 				</div>
 			  </div>

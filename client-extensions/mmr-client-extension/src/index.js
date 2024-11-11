@@ -9,9 +9,9 @@ class WebComponent extends HTMLElement {
 		const apikey=this.getAttribute("apiKey");
 		const MakerCategoryName=this.getAttribute("MakerCategoryName");
 		const globalSiteId=this.getAttribute("globalSiteId");
-		const serverUrl=this.getAttribute("serverUrl");
+		const catalogPage=this.getAttribute("catalogPage");
 		ReactDOM.render(
-			<MMRApiClient apikey={apikey} MakerCategoryName={MakerCategoryName} globalSiteId={globalSiteId}/>,
+			<MMRApiClient apikey={apikey} MakerCategoryName={MakerCategoryName} globalSiteId={globalSiteId} catalogPage={catalogPage}/>,
 			this
 		);
 	}
