@@ -2,9 +2,7 @@
     "private": true,
     "workspaces": {
         "packages": [
-            "client-extensions\\mmr-client-extension",
-            "client-extensions\\mmr-input-form",
-            "GoogleCloudVisionAPI"
+            "client-extensions\\mmr-client-extension"
         ]
     }
 }

@@ -5,7 +5,6 @@ import Webcam from 'react-webcam';
 
 const {Liferay, themeDisplay} = window;
 
-// query: (r_account_accountEntryId eq '50217') or (startswith(aTA, 'XY')) or (alert eq true)
 function MMRApiClient(props) {
 	console.log(props);
 	const [makerVocabularyId, setMakerVocabularyId] = useState("");
@@ -15,6 +14,7 @@ function MMRApiClient(props) {
 	//let friendlyPath = Liferay.ThemeDisplay.getLayoutRelativeURL();
 	//let friendlyPagePosition = friendlyPath.lastIndexOf('/');
 	//let friendlyPage = friendlyPath.substring(friendlyPagePosition);
+
 	let layoutURL = Liferay.ThemeDisplay.getLayoutURL();
 	const lastSlash = layoutURL.lastIndexOf('/');
 	// Extract the domain+website
@@ -122,16 +122,18 @@ function MMRApiClient(props) {
 		
 		  
 			 return (
-			  <div className="container">
+			  <div className="mmr-container">
 				<div className="webcam-column">
 				<Webcam
 				  audio={false}
 				  ref={webcamRef}
 				  screenshotFormat="image/jpeg"
 				/>
-				<button onClick={capture}>Capturar</button>
+				<br></br>
+				<button onClick={capture}>Capture</button>
 				</div>
 				<div className="button-column">
+				<h3>Registered Car:</h3>
 				{imgSrc && <img src={imgSrc} alt="captura" />}
 				<br></br>
 				<div id="sparePartsLink"><a></a></div>
